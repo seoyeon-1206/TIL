@@ -141,3 +141,11 @@
 
 1. 닉네임 변경은 doc import를 잘못 해와서 계속 오류가 났고 reducer에 오류가 있었다.
 2. 사진 변경은 storage를 쓰는건데 복잡했다…
+
+---
+
+## 팀 프로젝트 회고
+
+- firestore에 user email이 필요한가? : authenticaiton에 들어가서 필요 없음
+- api 오류 처리는 컴포넌트에서 쓰자
+- 카테고리 items 공통 로직화하자
