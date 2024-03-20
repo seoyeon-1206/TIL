@@ -149,6 +149,7 @@
       </aside>
 
 - **(4) route groups**
+
   - (3)-4-1. 폴더 === 라우팅?
     <aside>
     ☝ **?? : 폴더만 만들면 routing에 포함된다니.. 그러고 싶지 않은데!**
@@ -171,6 +172,7 @@
   `layout`파일은 어떤 `segment`와 그의 자식 `node`에 있는 요소들이 공통적으로 적용받게 할 UI를 정의한다. 자식 `node`에 있는 요소들이 공통 적용을 받아야 하기 때문에 반드시 `children` prop이 존재해야 함을 기억
   동일 `layout` 안에서 다른 경로를 계속해서 왔다갔다 할 때 **re-rendering**이 일어나지 않는다. 따라서 `headers`, `footers`, `sidebars` 처럼 유저가 경로를 마음껏 탐색하고 다녀도 굳이 바뀔 필요가 없는 경우 유용! ← 이후 배울 `template`과의 주요 차이니 기억하기
   ☑️ React.js를 사용했을 때는 react-router-dom으로 이렇게 구현했다.
+
   - 코드
     ```jsx
     createBrowserRouter(
@@ -194,8 +196,9 @@
       )
     );
     ```
-  ☑️ Next.js를 사용
+    ☑️ Next.js를 사용
   - 개념확인
+
     1. 특정 segment 이하의 route에서 적용받을 layout UI를 해당 폴더 안에 만듭니다.
        <img width="{해상도 비율}" src="https://teamsparta.notion.site/image/https%3A%2F%2Fprod-files-secure.s3.us-west-2.amazonaws.com%2F83c75a39-3aba-4ba4-a792-7aefe4b07895%2F1a21349f-a83d-4980-b146-1197534d0358%2FUntitled.png?table=block&id=cd0e86ba-ac39-4c6b-a168-bfef1b054457&spaceId=83c75a39-3aba-4ba4-a792-7aefe4b07895&width=2000&userId=&cache=v2"/>
     2. children을 포함시켜서 공통 UI를 만든다.
@@ -255,16 +258,21 @@
          );
        }
        ```
+
 - **(2) template**
   template 파일은 방금 학습한 layout과 상당히 유사한 컴포넌트다.
+
   > 상태를 유지하는가? 리-렌더링이 일어나는가?
-  경로 전반에 걸쳐서 상태가 유지되는 레이아웃과 달리, 템플릿은 라우팅을 탐색할 때 각 하위 항목에 대해 새 인스턴스를 만든다. 즉, User 입장에서 동일한 Template을 공유하는 경로 사이를 왔다갔다 할 때 DOM 요소가 다시 생성된다는 것을 의미한다.
-  그래서 이런 use-case가 있다.
+  > 경로 전반에 걸쳐서 상태가 유지되는 레이아웃과 달리, 템플릿은 라우팅을 탐색할 때 각 하위 항목에 대해 새 인스턴스를 만든다. 즉, User 입장에서 동일한 Template을 공유하는 경로 사이를 왔다갔다 할 때 DOM 요소가 다시 생성된다는 것을 의미한다.
+  > 그래서 이런 use-case가 있다.
+
   1. 템플릿을 통한 페이지 open animation
      - 페이지 간 전환 시 애니메이션을 계속해서 주고 싶을 때
      - layout으로 만들어놓으면, 최초 렌더링시에만 animation이 적용되고 끝나버린다.
   2. useEffect, useState에 의존하는 기능
+
   - ☑️ layout vs template
+
     1. 다음 예시코드를 통해 layout과 template의 차이를 살펴보자
     2. 똑같은 코드르
     3. 코드
@@ -314,8 +322,10 @@
        - template을 사용하는 경우 : 페이지 이동 시 마다 계속해서 호출
 
        [결론] 우리는 특정한 이유가 있지 않는 한, layout.tsx를 사용하자
+
 - **(3) not-found**
   react-router-dom에서는
+
   ```jsx
   <Router>
     <Routes>
@@ -324,8 +334,10 @@
     </Routes>
   </Router>
   ```
+
   next.js에서는 우리가 별도 설정을 하지 않아도 기본 스타일이 된 not found 페이지를 제공
   만일 이 스타일이 마음에 들지 않으면 직접 만들 수 있음
+
   ```jsx
   // src>app>not-found.tsx
   import React from "react";
@@ -336,6 +348,7 @@
 
   export default NotFound;
   ```
+
 - **(4) metadata와 SEO**
 
   Next.js는 기본적으로 Metadata를 가지고 있다.
@@ -459,3 +472,95 @@
             
             이처럼, 동적으로(dynamic) 들어온 params에 대해서도 metadata를 이용할 수 있다
 
+## 05. 페이지 이동과 관련된 기능 목록
+
+- **(1) Link**
+  > 기본 HTML의 `<a>` 태그를 확장한 개념
+  - [1] `prefetching`을 지원
+    - Next.js의 `<Link>` 컴포넌트는 **뷰포트에 링크가 나타나는 순간** 해당 페이지의 코드와 데이터를 미리 가져오는 프리페칭 기능을 지원한다. 사용자가 링크를 클릭하기 전에 데이터를 미리 로드함으로써 사용자가 링크를 클릭했을 때 거의 즉시 페이지를 볼 수 있게 한다.
+    - 참고
+      - 질문 1
+        Q : 뷰포트가 링크에 나타나는 순간이란?
+        A : 뷰포트(Viewport)는 사용자의 웹 브라우저에서 **현재 보이는 부분**을 의미한다. 쉽게 말해, 스크롤을 하기 전에 사용자가 볼 수 있는 화면의 영역이다. 따라서 "뷰포트에 링크가 나타나는 순간"이라 함은, 사용자가 웹 페이지를 스크롤하거나 페이지를 이동하면서 해당 링크가 실제로 사용자의 화면(즉, 뷰포트 내)에 보이기 시작하는 순간을 의미한다.
+      - 질문 2
+        Q : 사용자의 마우스가 링크 위에 mouseover 되는 순간 네트워크 요청이 생긴다는 것일까?
+        A : 기본적으로, **`<Link>`** 컴포넌트에 의해 렌더링된 링크가 사용자의 뷰포트 내에 나타나는 순간, Next.js는 해당 페이지의 데이터와 필요한 자원(예: JavaScript 파일)을 미리 가져오기 시작한다. 마우스 오버보다 더 넓은 개념으로, 링크가 화면에 보이기만 하면 프리페칭이 시작된다. 이 프리페칭은 페이지를 더 빠르게 로드할 수 있도록 미리 준비하는 과정이다.
+  - [2] route 사이에 `client-side navigation`을 지원
+    - `<Link>` 컴포넌트는 브라우저가 새 페이지를 로드하기 위해 서버에 요청을 보내는 대신, 클라이언트 측에서 페이지를 바꾸어 주기 때문에 페이지 전환 시 매우 빠른 사용자 경험(UX)을 제공한다.
+    - 페이지의 HTML을 서버에서 다시 가져올 필요 없이, 필요한 JSON 데이터만 서버로부터 가져와서 클라이언트에서 페이지를 재구성하여 렌더링한다.
+- **(2) useRouter**
+
+    <aside>
+    ☝ 먼저, Next.js에서 페이지를 이동시킬 수 있는 3대장에 대해 알아보자
+    
+    </aside>
+    
+    1. a태그 vs Link vs Router
+        - a태그
+            - 순수 HTML 요소
+            - 완전한 새 페이지로 전환을 원할 때 : 페이지는 완전히 새로고침 됨
+            - 빈 화면 보일 수 있음 ⇒ UX 좋지 않음
+            - Next.js에서는 Link 또는 Router를 사용한다!
+        - Link태그
+            - 위 설명 참조
+            - 결국 Link 태그는 a 태그를 만들어내기 때문에 SEO가 유리
+            - 클릭 즉시 페이지 이동
+        - Router(useRouter)
+            
+            <aside>
+            ☝ useRouter를 사용할 때는 항상 코드 최상단에 `“use client”`를 삽입해야 한다.
+            
+            </aside>
+            
+            - a 태그를 알아차릴 수 없기 때문에 크롤러 입장에서는 해당 요소가 ‘이동을 원한다’라는 것을 알 수 없음 ⇒ SEO 불리
+            - 대부분 onClick 같은 이벤트 핸들러에서 사용
+            - 클릭 후 로직의 순서에 따라 실행하므로, 즉시 이동이 아님
+                
+                ```tsx
+                "use client";
+                
+                import { useRouter } from "**next/navigation**";
+                
+                export default function Test () {
+                	const router = useRouter();
+                	
+                	const handleButtonClick = () => {
+                		로직1();
+                		로직2();
+                		
+                		...
+                		
+                		router.push("/new_location");
+                	}
+                
+                	return <button onClick={handleButtonClick}>클릭!</button>
+                }
+                ```
+                
+    2. router.push, router.replace, router.back, router.reload
+        
+        <aside>
+        ☝ 아래 내용을 알기 위해서는 웹 브라우저의 history stack을 알아야만 한다. 개념상 이해하기 쉽게 하기 위한 참고이미지 정도로만 활용하기. 실제로는 history stack은 한개라고 이해해주시는 것이 좋음 🙂
+
+        <img width="{해상도 비율}" src="https://teamsparta.notion.site/image/https%3A%2F%2Fprod-files-secure.s3.us-west-2.amazonaws.com%2F83c75a39-3aba-4ba4-a792-7aefe4b07895%2Fbde25c64-ba59-480b-a56b-bf0fdeac8ca7%2FUntitled.png?table=block&id=7c278ec8-78b1-4278-8038-07530ce4b015&spaceId=83c75a39-3aba-4ba4-a792-7aefe4b07895&width=2000&userId=&cache=v2"/>
+
+
+        - history stack은 방문자의 페이지 방문 순서를 기록하는 시스템입
+        - 웹 사이트 내에서 페이지를 이동할 때, 페이지의 URL이 history stack에 추가된다.
+        - EX : 뒤로가기, 앞으로 가기 했을 때 이동할 수 있는 이유
+        </aside>
+
+        1. router.push
+            - 새로운 URL을 히스토리 스택에 추가한다.
+            - 사용자가 router.push로 페이지를 이동하면, 이동한 페이지의 URL이 히스토리 스택의 맨 위에 쌓인다.
+            - 이후 사용자가 브라우저의 '뒤로 가기' 버튼을 클릭하면, 스택에서 가장 최근에 추가된 URL로부터 이전 페이지(URL)로 돌아간다.
+        2. router.replace
+            - 현재 URL을 히스토리 스택에서 새로운 URL로 대체한다.
+            - 현재 페이지의 URL이 새로운 URL로 교체되며, '뒤로 가기'를 클릭했을 때 이전 페이지로 이동하지만, 교체된 페이지로는 돌아갈 수 없다.
+            - 현재 페이지를 히스토리에서 완전히 대체한다.
+        3. router.back
+            - 사용자를 히스토리 스택에서 한 단계 뒤로 이동시킨다.
+            - 마치 브라우저의 '뒤로 가기' 버튼을 클릭한 것과 같은 효과를 내며, 사용자를 이전에 방문했던 페이지로 돌아가게 한다.
+        4. router.reload
+            - 현재 페이지를 새로고침한다.
+            - 히스토리 스택에 영향을 미치지 않는다. 페이지의 데이터를 최신 상태로 업데이트하고 싶을 때 사용할 수 있다.
