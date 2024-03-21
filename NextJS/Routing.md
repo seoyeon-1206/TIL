@@ -564,3 +564,15 @@
         4. router.reload
             - 현재 페이지를 새로고침한다.
             - 히스토리 스택에 영향을 미치지 않는다. 페이지의 데이터를 최신 상태로 업데이트하고 싶을 때 사용할 수 있다.
+
+## 06. Tailwind CSS
+
+- **(1) 세팅**
+  - 필요 없음
+- **(2) 사용방법**
+  1. 웹사이트 접속
+
+     [Tailwind CSS - Rapidly build modern websites without ever leaving your HTML.](https://tailwindcss.com/)
+
+  2. 원하는 디자인을 검색
+  3. React 컴포넌트의 className에 삽입
