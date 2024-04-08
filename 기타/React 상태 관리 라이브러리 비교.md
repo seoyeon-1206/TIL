@@ -4,6 +4,8 @@ react-query, zustand 그리고 redux까지 react 상태관리 라이브러리가
 
 # 먼저, 상태관리를 왜 해야할까?
 
+<img width="100%" src="https://velog.velcdn.com/images/naro-kim/post/2a306275-cd0b-4770-9a81-329b054d1baa/image.png"/>
+
 ### **1. 단방향 바인딩**
 
 - 리액트는 단방향 바인딩을 지원하기 때문
